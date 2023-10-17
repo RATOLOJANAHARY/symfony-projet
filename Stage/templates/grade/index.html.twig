@@ -1,0 +1,165 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    Grade
+{% endblock %}
+
+{% block body %}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid bg-light">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Grade</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Acceuil</a></li>
+              <li class="breadcrumb-item active">grade</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        &nbsp;&nbsp;&nbsp;&nbsp;<h5>Pour ajouter une nouvelle grade, cliquez sur le bouton nouveaux qui s'ouvrira le formulaire de nouveaux insertion</h5>
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header bg-gray">
+              <h1 class="card-title"><b>LISTE DU GRADE</b></h3>
+                <div class="card-tools">
+                  <button style="border-radius: 100px;" type="button" class="btn btn-block btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" >
+                      <i class="nav-icon fa fa-plus"></i> nouveaux
+                  </button>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example2" class="table table-bordered table-striped nowrap" cellspacing="0" width="100%">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Code grade</th>
+                    <th>Nom grade</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% set i = 0 %}  
+                  {% for grade in grades %}   
+                  <tr>
+                    {% set i = i+1 %}
+                    <td>{{ i }}</td>
+                    <td>{{ grade.codegrade }}</td>
+                    <td>{{ grade.nomgrade }}</td>
+                    <td style="text-align: center;">
+                        <button style="border-radius: 100px;" id="{{ grade.id }}" type="button" class="Editer btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModal1">
+                            <i class="nav-icon fa fa-edit"></i>
+                        </button>
+                    
+                        <a style="border-radius: 100px;" type="button" href="{{ path('grade_delete', {'id': grade.id}) }}" class="btn btn-danger btn-sm"><i class="nav-icon fa fa-trash"></i></a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+
+    <!-- Modal AJOUT GRADE-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!--<div class="card-header bg-gray">-->
+       <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">AJOUT D'UN NOUVELLE GRADE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+       <!--</div>-->
+      </div>
+       <div class="modal-body">
+            <form action="{{ path('grade_new') }}" method="post">
+                <br>
+                <!--<h5 align="center">Ajout d'une nouvelle grade</h5>-->
+                <div class="card-body">
+                <div class="form-group">
+                    <label for="codegrade">Code grade</label>
+                    <input id="codegrade" name="codegrade" type="text" class="form-control" required="">
+                    </div>
+                    <div class="form-group">
+                        <label for="nomgrade">Nom grade</label>
+                        <input id="nomgrade" name="nomgrade" type="text" class="form-control" required="">
+                    </div>
+                </div>
+                <center>
+                    <button type="submit" class="btn btn-info">Ajout&nbsp;&nbsp;&nbsp;<i class="nav-icon fa fa-plus"></i></button>
+                </center>
+                <br>
+            </form>
+        </div>
+    </div>
+   </div>
+</div>
+
+<!-- Modal EDIT GRADE-->
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+        <div class="modal-content">
+           <!--<div class="card-header bg-gray">-->
+           <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">MODIFICATION D'UN GRADE</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+           <!--</div>-->
+        </div>
+       <div class="modal-body">
+          <form action="{{ path('grade_edit') }}" method="post">
+                <br>
+                <!--<h5 align="center">Modification d'un grade</h5>-->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="codegrade_mod">Code grade</label>
+                        <input id="codegrade_mod" name="codegrade_mod" type="text" class="form-control" required="">
+                    </div>
+                    <div class="form-group">
+                        <label for="nomgrade_mod">Nom grade</label>
+                        <input id="nomgrade_mod" name="nomgrade_mod" type="text" class="form-control" required="">
+                        </div>
+                        <input type="hidden" id="idGrade" name="idGrade">
+                        </div>
+                        <center>
+                          <button type="submit" class="btn btn-success">Changer&nbsp;&nbsp;&nbsp;<i class="nav-icon fa fa-plus"></i></button>
+                        </center>
+                <br>
+          </form>
+       </div>
+    </div>
+  </div>
+</div>
+<!-- /.content-wrapper -->
+<script>
+       
+       $('#example2').on('click','.Editer',function(){
+           var table = $('#example2').DataTable();
+           var data = table.row($(this).closest('tr')).data();
+           var colCodegrad = data[Object.keys(data)[1]];
+           var colNomgrad = data[Object.keys(data)[2]];
+           var idgrade = $(this).attr('id');
+           $('#idGrade').val(idgrade);
+           $('#codegrade_mod').val(colCodegrad);
+           $('#nomgrade_mod').val(colNomgrad);
+       });
+ 
+</script>
+{% endblock %}

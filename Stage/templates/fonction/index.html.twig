@@ -1,0 +1,157 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    Fonction
+{% endblock %}
+
+{% block body %}
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+        <div class="container-fluid bg-light">
+            <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>
+                    <b>Fonction</b>
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">fonction</li>
+                </ol>
+            </div>
+            </div>
+        </div><!-- /.container-fluid -->
+        </section>
+
+        <section class="content">
+            <div class="row">
+                &nbsp;&nbsp;&nbsp;<h5>Pour ajouter une nouvelle fonction, cliquez sur le bouton nouveaux qui s'ouvrira le formulaire de nouveaux insertion</h5><br><br>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-gray">
+                          <h3 class="card-title"><b>LISTE DU FONCTION</b></h3>
+                          <div class="card-tools">
+                                <button style="border-radius: 100px;" type="button" class="btn btn-block btn-info btn-sm" data-toggle="modal" data-target="#exampleModal"  >
+                                    <i class="nav-icon fa fa-plus"></i> nouveaux
+                                </button>
+                          </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                          <table id="example2" class="table table-bordered table-striped nowrap" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                              <th>Id</th>
+                              <th>Nom fonction</th>
+                              <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% set i = 0 %}  
+                                {% for fonction in fonctions %}   
+                                <tr>
+                                    {% set i = i+1 %}
+                                    <td>{{ i }}</td>
+                                    <td>{{ fonction.NomFonction }}</td>
+                                    <td style="text-align: center;">
+                                        <button style="border-radius: 100px;" id="{{ fonction.id }}" type="button" class="Editer btn btn-success btn-sm" btn-sm" data-toggle="modal" data-target="#exampleModal1">
+                                            <i class="nav-icon fa fa-edit"></i>
+                                        </button>
+                                    
+                                        <a style="border-radius: 100px;" type="button" href="{{ path('fonction_delete', {'id': fonction.id}) }}" class="btn btn-danger btn-sm"><i class="nav-icon fa fa-trash"></i></a>
+                                    </td>       
+                                {% endfor %}
+                                </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!-- /.card-body -->
+                      </div>
+                    <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+
+<!--MODAL AJOUT FONCTION-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <!--<div class="card-header bg-gray">-->
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">AJOUT D'UNE NOUVELLE FONCTION</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+       </div>
+    <!--</div>-->
+    
+       <div class="modal-body">
+            <form action="{{ path('fonction_new') }}" method="post">
+                <br>
+                    <!--<h5 align="center">Ajout d'une nouvelle fonction</h5>-->
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="nomfonction">Nom fonction</label>
+                                <input id="nomfonction" name="nomfonction" type="text" class="form-control" required="">
+                        </div>
+                    </div>
+                        <center>
+                            <button type="submit" class="btn btn-info"><i class="nav-icon fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Ajout</button>
+                        </center>
+                    <br>
+            </form>
+       </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDIT FONCTION-->
+    <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+           <!--<div class="card-header bg-gray">-->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">MODIFICATION D'UN FONCTION</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <!--</div>-->
+              <div class="modal-body">
+                <form action="{{ path('fonction_edit') }}" method="post">
+                    <br>
+                    <!--<h5 align="center">Modification d'un fonction</h5>-->
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="nomfonction_mod">Nom fonction</label>
+                                    <input id="nomfonction_mod" name="nomfonction_mod" type="text" class="form-control" required="">
+                            </div>
+                                    <input type="hidden" id="idFonction" name="idFonction">
+                        </div>
+                                <center>
+                                    <button type="submit" class="btn btn-success"><i class="nav-icon fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Changer</button>
+                                </center>
+                    <br>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+       
+            $('#example2').on('click','.Editer',function(){
+                var table = $('#example2').DataTable();
+                var data = table.row($(this).closest('tr')).data();
+                var colNomFonction = data[Object.keys(data)[1]];
+                var idfonction = $(this).attr('id');
+                $('#idFonction').val(idfonction);
+                $('#nomfonction_mod').val(colNomFonction); 
+            });
+      
+    </script>
+{% endblock %}
+
+

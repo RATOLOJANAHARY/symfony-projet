@@ -1,0 +1,401 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    Personnel
+{% endblock %}
+
+{% block body %}
+
+ <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Personnel</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Acceuil</a></li>
+              <li class="breadcrumb-item active">personnel</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header bg-gray">
+              <h3 class="card-title"><b>Liste du personnel</b></h3>
+              <div class="card-tools">
+                <button style="border-radius: 100px;" type="button" class="btn btn-block btn-info btn-sm" data-toggle="modal" data-target="#modal-ajout" >
+                    <i class="nav-icon fa fa-plus"></i> nouveaux
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-striped nowrap" style="width: 100%;">
+                <thead>
+                        <tr>
+                          <th>CIN</th>
+                          <th>N° matricule</th>
+                          <th>Nom</th>
+                          <th>Prenom</th>
+                          <th>Sexe</th>
+                          <th>Date de naissance</th>
+                          <th>Service</th>
+                          <th>Direction</th>
+                          <th>Fonction</th>
+                          <th>Grade</th>
+                          <th>Diplome</th>
+                          <th>Categorie</th>
+                          <th>Indice</th>
+                          <th>Classe</th>
+                          <th>Echellon</th>
+                          <th>Date d'affectation</th>
+                          <th>Date d'effet dernier</th>
+                          <th>Date d'entrée</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for personnel in personnels %}   
+                            <tr>
+                                <td>{{ personnel.cin }}</td>
+                                <td>{{ personnel.nummatricule }}</td>
+                                <td>{{ personnel.nom }}</td>
+                                <td>{{ personnel.prenom }}</td>
+                                <td>{{ personnel.sexe }}</td>
+                                <td>{{ personnel.datenaissance | date('d/m/Y') }}</td>
+                                <td>{{ personnel.service.CodeService }}</td>
+                                <td>{{ personnel.service.direction.CodeDirection }}</td>
+                                <td>{{ personnel.fonction.NomFonction }}</td>
+                                <td>{{ personnel.grade.CodeGrade }}</td>
+                                <td>{{ personnel.diplome.NomDiplome }}</td>
+                                <td>{{ personnel.categorie }}</td>
+                                <td>{{ personnel.indice }}</td>
+                                <td>{{ personnel.classe }}</td>
+                                <td>{{ personnel.echellon }}</td>
+                                <td>{{ personnel.dateaffectation | date('d/m/Y') }}</td>
+                                <td>{{ personnel.dateeffetdernier | date('d/m/Y') }}</td>
+                                <td>{{ personnel.dateentre | date('d/m/Y') }}</td>
+                                <td style="text-align: center;">
+                                    <button style="border-radius: 100px;" type="button" id="{{ personnel.id }}" value="{{ personnel.service.id }}-{{ personnel.fonction.id }}-{{ personnel.grade.id }}-{{ personnel.diplome.id }}" class="Editer btn btn-success btn-sm" data-toggle="modal" data-target="#modal-modification">
+                                    <i class="nav-icon fa fa-edit"></i>
+                                    </button>
+                                    <a style="border-radius: 100px;" type="button" href="{{ path('personnel_delete', {'id': personnel.id}) }}" class="btn btn-danger btn-sm"><i class="nav-icon fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                      </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- MODAL AJOUT -->
+  <div class="modal fade" id="modal-ajout">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Ajout un personnel</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form action="{{ path('personnel_new') }}" method="post">
+                <div class="modal-body">
+                    
+                    <div class="modal-body">
+                      <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label for="cin">CIN</label>
+                            <input id="cin" name="cin" type="text" class=" form-control" required>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="nummatricule">N° matricule</label>
+                            <input id="nummatricule" name="nummatricule" type="text" class="required form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="sexe">Sexe</label>
+                            <select id="sexe" name="sexe"class="required form-control" >
+                                <option value="Homme">Masculin</option>
+                                <option value="Femme">Féminin</option> 
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="nom">Nom</label>
+                            <input id="nom" name="nom" type="text" class="required form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="idservice">Nom service</label>
+                            <select id="idservice" name="idservice"class="required form-control" >
+                                {% for service in services %}
+                                <option value="{{service.id}}">{{service.CodeService}}</option>
+                                {% endfor %}  
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="prenom">Prenom</label>
+                            <input id="prenom" name="prenom" type="text" class="required form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="idfonction">Nom fonction</label>
+                            <select id="idfonction" name="idfonction"class="required form-control" >
+                                {% for fonction in fonctions %}
+                                <option value="{{fonction.id}}">{{fonction.NomFonction}}</option>
+                                 {% endfor %}  
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="datenaissance">Date de naissance</label>
+                            <input id="datenaissance" name="datenaissance" type="date" class="required form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="idgrade">Nom grade</label>
+                            <select id="idgrade" name="idgrade"class="required form-control" >
+                                {% for grade in grades %}
+                                <option value="{{grade.id}}">{{grade.CodeGrade}}</option>
+                                 {% endfor %}  
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="dateaffectation">Date de affectation</label>
+                            <input id="dateaffectation" name="dateaffectation" type="date" class="required form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="iddiplome">Nom diplome</label>
+                            <select id="iddiplome" name="iddiplome"class="required form-control" >
+                                {% for diplome in diplomes %}
+                                <option value="{{diplome.id}}">{{diplome.NomDiplome}}</option>
+                                 {% endfor %}  
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="dateeffetdernier">Date d'effet dernier</label>
+                            <input id="dateeffetdernier" name="dateeffetdernier" type="date" class="required form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="classe">Classe</label>
+                            <input id="classe" name="classe" type="text" class="required form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="echellon">Echellon</label>
+                            <input id="echellon" name="echellon" type="text" class="required form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="categorie">Categorie</label>
+                            <input id="categorie" name="categorie" type="text" class="required form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="indice">Indice</label>
+                            <input id="indice" name="indice" type="text" class="required form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="dateentre">Date d'entrée</label>
+                            <input id="dateentre" name="dateentre" type="date" class="required form-control">
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <center>
+                  <button id="annuler" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button id="add" type="submit" class="btn btn-primary">Submit</button>
+                </center>
+            </form>
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+      <!-- MODAL MODIFICATION -->
+      <div class="modal fade" id="modal-modification">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Quick Example</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form action="{{ path('personnel_edit') }}" method="post">
+                <div class="modal-body">    
+                  <div class="modal-body">
+                    <div class="form-row">
+                      <div class="form-group col-sm-6">
+                          <label for="nummatricule_mod">N° matricule</label>
+                          <input id="nummatricule_mod" name="nummatricule_mod" type="text" class="required form-control">
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="sexe_mod">Sexe</label>
+                          <select id="sexe_mod" name="sexe_mod"class="required form-control" >
+                              <option value="Homme">Masculin</option>
+                              <option value="Femme">Féminin</option> 
+                          </select>
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="nom_mod">Nom</label>
+                          <input id="nom_mod" name="nom_mod" type="text" class="required form-control">
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="idservice_mod">Nom service</label>
+                          <select id="idservice_mod" name="idservice_mod"class="required form-control" >
+                              {% for service in services %}
+                              <option value="{{service.id}}">{{service.CodeService}}</option>
+                              {% endfor %}  
+                          </select>
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="prenom_mod">Prenom</label>
+                          <input id="prenom_mod" name="prenom_mod" type="text" class="required form-control">
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="idfonction_mod">Nom fonction</label>
+                          <select id="idfonction_mod" name="idfonction_mod"class="required form-control" >
+                              {% for fonction in fonctions %}
+                              <option value="{{fonction.id}}">{{fonction.NomFonction}}</option>
+                               {% endfor %}  
+                          </select>
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="datenaissance_mod">Date de naissance</label>
+                          <input id="datenaissance_mod" name="datenaissance_mod" type="date" class="required form-control">
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="idgrade_mod">Nom grade</label>
+                          <select id="idgrade_mod" name="idgrade_mod"class="required form-control" >
+                              {% for grade in grades %}
+                              <option value="{{grade.id}}">{{grade.CodeGrade}}</option>
+                               {% endfor %}  
+                          </select>
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="dateaffectation_mod">Date de affectation</label>
+                          <input id="dateaffectation_mod" name="dateaffectation_mod" type="date" class="required form-control">
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="iddiplome_mod">Nom diplome</label>
+                          <select id="iddiplome_mod" name="iddiplome_mod"class="required form-control" >
+                              {% for diplome in diplomes %}
+                              <option value="{{diplome.id}}">{{diplome.NomDiplome}}</option>
+                               {% endfor %}  
+                          </select>
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="dateeffetdernier_mod">Date d'effet dernier</label>
+                          <input id="dateeffetdernier_mod" name="dateeffetdernier_mod" type="date" class="required form-control">
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="classe_mod">Classe</label>
+                          <input id="classe_mod" name="classe_mod" type="text" class="required form-control">
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="echellon_mod">Echellon</label>
+                          <input id="echellon_mod" name="echellon_mod" type="text" class="required form-control">
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="categorie_mod">Categorie</label>
+                          <input id="categorie_mod" name="categorie_mod" type="text" class="required form-control">
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="indice_mod">Indice</label>
+                          <input id="indice_mod" name="indice_mod" type="text" class="required form-control">
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="dateentre_mod">Date d'entrée</label>
+                          <input id="dateentre_mod" name="dateentre_mod" type="date" class="required form-control">
+                      </div>
+                      <input id="idper" name="idper" type="hidden" class="required form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <center>
+                    <button id="annuler" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="add" type="submit" class="btn btn-primary">Submit</button>
+                  </center>
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+       <script>
+       
+       $('#example1').on('click','.Editer',function(){
+           var table = $('#example1').DataTable();
+           var jointure = $(this).val();
+           var pers = jointure.split('-');
+           var data = table.row($(this).closest('tr')).data();
+           var colNumMatricule = data[Object.keys(data)[1]];
+           var colNom = data[Object.keys(data)[2]];
+           var colPrenom = data[Object.keys(data)[3]];
+           var colSexe = data[Object.keys(data)[4]];
+           var colDateNaissance = data[Object.keys(data)[5]];//amd
+           var naissance = colDateNaissance.split('/');
+           colDateNaissance = naissance[2] + "-" + naissance[1] + "-"+ naissance[0];
+           var colIdservice = pers[0];
+           var colIdfonction = pers[1];
+           var colIdgrade = pers[2];
+           var colIddiplome = pers[3];
+           var colCategorie = data[Object.keys(data)[11]];
+           var colIndice = data[Object.keys(data)[12]];
+           var colClasse = data[Object.keys(data)[13]];
+           var colEchellon = data[Object.keys(data)[14]];
+           var colDateAffectation = data[Object.keys(data)[15]];
+           var affectation = colDateAffectation.split('/');
+           colDateAffectation = affectation[2] + "-" + affectation[1] + "-"+ affectation[0];
+           var colDateEffetDernier = data[Object.keys(data)[16]];
+           var effetdernier = colDateEffetDernier.split('/');
+           colDateEffetDernier = effetdernier[2] + "-" + effetdernier[1] + "-"+ effetdernier[0];
+           var colDateEntre = data[Object.keys(data)[17]];
+           var entree = colDateEntre.split('/');
+           colDateEntre = entree[2] + "-" + entree[1] + "-"+ entree[0];
+           var id = $(this).attr('id');
+           $('#idper').val(id);
+           $('#nummatricule_mod').val(colNumMatricule);
+           $('#nom_mod').val(colNom);
+           $('#prenom_mod').val(colPrenom);
+           $('#sexe_mod').val(colSexe);
+           $('#datenaissance_mod').val(colDateNaissance);
+           $('#idservice_mod').val(colIdservice);
+           $('#idfonction_mod').val(colIdfonction);
+           $('#idgrade_mod').val(colIdgrade);
+           $('#iddiplome_mod').val(colIddiplome);
+           $('#categorie_mod').val(colCategorie);
+           $('#indice_mod').val(colIndice);
+           $('#classe_mod').val(colClasse);
+           $('#echellon_mod').val(colEchellon);
+           $('#dateaffectation_mod').val(colDateAffectation);
+           $('#dateeffetdernier_mod').val(colDateEffetDernier);
+           $('#dateentre_mod').val(colDateEntre);
+           
+       });
+ 
+</script>
+{% endblock %}
+
+

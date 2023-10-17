@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StatistiqueController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<div class="container" style="width:500px; height:500px">
+<canvas id="bar" ></canvas>
+</div>
+
+ <script type="text/javascript" src="{{ asset('plugins/chart.js/Chart.js') }}"></script> 
+
+           {% set M = 0 %}
+           {% set F = 0 %}
+           {% for personnels in personnels %} 
+           {% if personnels.sexe == "Masculin"  %}
+           {% set M = M + 1 %}
+           {% else %}
+           {% set F = F + 1 %}
+           {% endif %}
+           {% endfor %}
+         
+ 
+  <script type="text/javascript" >
+        var bar = document.getElementById("bar")
+        var barchart = new Chart(bar,{
+            type: 'bar',
+            data: {
+                labels:
+        [
+          "Homme","Femme" 
+        ],
+
+                datasets: [{
+                    label:"Nombre",
+
+                    data: 
+        [  
+                {{M}},{{F}}
+           
+
+        ],
+                    backgroundColor: [
+                        'rgba(255,99,132,0.2)',
+                        'rgba(54,162,235,0.2)',
+                        
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54,162,235,1)',
+                        
+                    ],
+                    hoverBackgroundColor:[
+                    'rgba(255,99,132,1)',
+                        'rgba(54,162,235,1)',
+                        'rgba(255,206,86,1)',
+                        
+
+                    ],
+                    borderWidth: 1,
+
+
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            offsetGridLines: true,
+                        }
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                }
+            }
+        });
+    </script>
+   
+{% endblock %}

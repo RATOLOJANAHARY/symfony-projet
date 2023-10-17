@@ -1,0 +1,174 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    Direction
+{% endblock %}
+
+{% block body %}
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+        <div class="container-fluid bg-light">
+            <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>
+                    <b>Direction</b>
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">direction</li>
+                </ol>
+            </div>
+            </div>
+        </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                &nbsp;&nbsp;&nbsp;&nbsp;<h5>Pour ajouter une nouvelle direction, cliquez sur le bouton nouveaux qui s'ouvrira le formulaire de nouveaux insertion</h5>
+            <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-gray">
+                <h1 class="card-title"><b>LISTE DU DIRECTION</b></h1>
+                    <div class="card-tools">
+                        <button style="border-radius: 100px;" type="button" class="btn btn-block btn-info btn-sm"  data-toggle="modal" data-target="#exampleModal" >
+                            <i class="nav-icon fa fa-plus"></i> nouveaux
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card-body" style="overflow: auto;">
+                <table id="example2" class="table table-bordered table-striped nowrap" collspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Code direction</th>
+                            <th>Nom direction</th>
+                            <th>Action-1</th>
+                  
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set i = 0 %}  
+                        {% for dir in direction %}   
+                        <tr>
+                            {% set i = i+1 %}
+                            <td>{{ i }}</td>
+                            <td>{{ dir.CodeDirection }}</td>
+                            <td>{{ dir.NomDirection }}</td>
+                            <td style="text-align: center;">
+                                <button style="border-radius: 100px;" id="{{ dir.id }}" type="button" class="Editer btn btn-success btn-sm"  data-toggle="modal" data-target="#exampleModal1">
+                                    <i class="nav-icon fa fa-edit"></i>
+                                </button>
+                    
+                                <a style="border-radius: 100px;" type="button" href="{{ path('direction_delete', {'id': dir.id}) }}" class="btn btn-danger btn-sm"><i class="nav-icon fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            </div>
+            <!-- /.col -->
+            
+<!-- Modal AJOUT-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <!--<div class="card-header bg-gray">-->
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">AJOUT D'UNE NOUVELLE DIRECTION</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button> 
+        </div>
+    <!--</div>-->
+      <div class="modal-body">
+        <form action="{{ path('direction_new') }}" method="post">
+            <br>
+            <!--<h5 align="center">Ajout d'une nouvelle direction</h5>-->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="codedirection">Code direction</label>
+                        <input id="codedirection" name="codedirection" type="text" class="form-control" required="">
+                    </div>
+                    <div class="form-group">
+                        <label for="nomdirection">Nom direction</label>
+                        <input id="nomdirection" name="nomdirection" type="text" class="form-control" required="">
+                    </div>
+                </div>
+                <center>
+                  <button type="submit" class="btn btn-info">Ajout&nbsp;&nbsp;&nbsp;<i class="nav-icon fa fa-plus"></i></button>
+                </center>
+                <br>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal EDIT DIRECTION-->
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <!--<div class="card-header bg-gray">-->
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">MODIFICATION D'UN DIRECTION</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+       <!--</div>-->
+       <div class="modal-body">
+            <form action="{{ path('direction_edit') }}" method="post">
+                <br>
+                    <!--<h5 align="center">Modification d'un direction</h5>-->
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="codedirection_mod">Code direction</label>
+                                    <input id="codedirection_mod" name="codedirection_mod" type="text" class="form-control" required="">
+                            </div>
+                            <div class="form-group">
+                                <label for="nomdirection_mod">Nom fonction</label>
+                                    <input id="nomdirection_mod" name="nomdirection_mod" type="text" class="form-control" required="">
+                            </div>
+                                    <input type="hidden" id="iddirection" name="iddirection">
+                            </div>
+                            <center>
+                              <button type="submit" class="btn btn-success">Changer&nbsp;&nbsp;&nbsp;<i class="nav-icon fa fa-plus"></i></button>
+                            </center>
+                <br>
+            </form>
+       </div>
+    </div>
+  </div>
+</div>
+        </section>
+        <!-- /.content -->
+    </div>
+
+
+    <script>
+       
+        $('#example2').on('click','.Editer',function(){
+            var table = $('#example2').DataTable();
+            var data = table.row($(this).closest('tr')).data();
+            var colCodeDir = data[Object.keys(data)[1]];
+            var colNomDir = data[Object.keys(data)[2]];
+            var iddirection = $(this).attr('id');
+            $('#iddirection').val(iddirection);
+            $('#codedirection_mod').val(colCodeDir);
+            $('#nomdirection_mod').val(colNomDir); 
+        });
+
+    </script>
+{% endblock %}
+
+

@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    Personne RETRAITE
+{% endblock %}
+
+{% block body %}
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+        <div class="container-fluid bg-light">
+            <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>
+                    <b>Affichage Retraite</b>
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Affichage</li>
+                </ol>
+            </div>
+            </div>
+        </div><!-- /.container-fluid -->
+        </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-gray">
+                          <h3 class="card-title"><b><!--TABLE FONCTION-->LISTE AFFICHAGE RETRAITE</b></h3>
+                          <div class="card-tools">
+                            <a href="/imprimer_ecd" target="_blank">Imprimer</a>
+                          </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                          <table id="example2" class="table table-bordered table-stripeddt-responsive nowrap" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>N°</th>
+                                    <th>CIN</th>
+                                    <th>Nom</th>
+                                    <th>Prenom</th>
+                                    <th>Sexe</th>
+                                    <th>Service</th>
+                                    <th>Date d'entrée</th>
+                                    <th>Grade</th>
+                                    <th>Année de service</th>
+                                    <th>Age</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set i = 0 %}  
+                                {% for personnel in personnels %}   
+                                {% if personnel.anneservice >=2 %}
+                                <tr>
+                                    {% set i = i+1 %}
+                                    <td>{{i}}</td>
+                                    <td>{{ personnel.CIN }}</td>
+                                    <td>{{ personnel.Nom }}</td>
+                                    <td>{{ personnel.Prenom }}</td>
+                                    <td>{{ personnel.Sexe }}</td>
+                                    <td>{{ personnel.codeservice }}</td>
+                                    <td>{{ personnel.date_entre | date('d/m/Y') }}</td>
+                                    <td>{{ personnel.code_grade }}</td>
+                                    <td>{{ personnel.anneservice }}</td>
+                                    <td>{{ personnel.age }}</td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        
+                        </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+        <!-- /.content -->
+    </div>
+
+{% endblock %}
+
+
+

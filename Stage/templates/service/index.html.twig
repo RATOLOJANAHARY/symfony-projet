@@ -1,0 +1,187 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    Service
+{% endblock %}
+
+{% block body %}
+
+ <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid bg-light">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Service</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Acceuil</a></li>
+              <li class="breadcrumb-item active">service</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        &nbsp;&nbsp;&nbsp;&nbsp;<h5>Pour ajouter une nouvelle service, cliquez sur le bouton nouveaux qui s'ouvrira le formulaire de nouveaux insertion</h5><br><br>
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header bg-gray">
+              <h1 class="card-title"><b>LISTE DU SERVICE</b></h3>
+                <div class="card-tools">
+                  <button style="border-radius: 100px;" type="button" class="btn btn-block btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" >
+                      <i class="nav-icon fa fa-plus"></i> nouveaux
+                  </button>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" style="overflow: auto;">
+              <table id="example2" class="table table-bordered table-striped nowrap" cellspacing="0" width="100%">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Abreviation</th>
+                    <th>Nom service</th>
+                    <th>Direction</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% set i = 0 %}  
+                  {% for service in services %}
+                  <tr>
+                    {% set i = i+1 %}
+                    <td>{{ i }}</td>
+                    <td>{{ service.codeservice }}</td>
+                    <td>{{ service.nomservice }}</td>
+                    <td>{{ service.direction.CodeDirection }}</td>
+                    <td style="text-align: center;">
+                        <button style="border-radius: 100px;" id="{{ service.id }}" value="{{ service.direction.id }}" type="button" class="Editer btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModal1">
+                            <i class="nav-icon fa fa-edit"></i>
+                        </button>
+                    
+                        <a style="border-radius: 100px;" type="button" href="{{ path('service_delete', {'id': service.id}) }}" class="btn btn-danger btn-sm"><i class="nav-icon fa fa-trash"></i></a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+      </div>
+        <!-- /.col -->
+
+<!-- Modal AJOUT SERVICE-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <!--<div class="card-header bg-gray">-->
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">AJOUT D'UNE NOUVELLE SERVICE</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+         <!--</div>-->
+        </div>
+       <div class="modal-body">
+            <form action="{{ path('service_new') }}" method="post">
+                <br>
+                    <!--<h5 align="center">Ajout d'une nouvelle service</h5>-->
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="codeservice">Code service</label>
+                                <input id="codeservice" name="codeservice" type="text" class="form-control" required="">
+                            </div>
+                            <div class="form-group">
+                                <label for="nomservice">Nom service</label>
+                                <input id="nomservice" name="nomservice" type="text" class="form-control" required="">
+                            </div>
+                            <div class="form-group">
+                              <label for="iddir">Nom direction:</label>
+                              <select id="iddir" name="iddir"class="required form-control" required>
+                                  <option>Choix direction</option>
+                                  {% for direction in directions %}
+                                  <option value="{{direction.id}}">{{direction.CodeDirection}}</option>
+                                  {% endfor %}  
+                              </select>
+                            </div>
+                        </div>
+                        <center>
+                          <button type="submit" class="btn btn-info">Ajout&nbsp;&nbsp;&nbsp;<i class="nav-icon fa fa-plus"></i></button>
+                        </center>
+                        <br>
+            </form>
+       </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDIT SERVICE-->
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <!--<div class="card-header bg-gray">-->
+       <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICATION D'UN SERVICE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+      <!--</div>-->
+       <div class="modal-body">
+            <form action="{{ path('service_edit') }}" method="post">
+                <br>
+                <!--<h5 align="center">Modification d'une Service</h5>-->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="codeservice_mod">Code service</label>
+                            <input id="codeservice_mod" name="codeservice_mod" type="text" class="form-control" required="">
+                    </div>
+                    <div class="form-group">
+                            <label for="nomservice_mod">Nom service</label>
+                            <input id="nomservice_mod" name="nomservice_mod" type="text" class="form-control" required="">
+                    </div>
+
+                    <div class="form-group">
+                            <label for="iddir_mod">Nom direction:</label>
+                            <select id="iddir_mod" name="iddir_mod"class="required form-control" required>
+                            <option>Choix direction</option>
+                            {% for direction in directions %}
+                            <option value="{{direction.id}}">{{direction.CodeDirection}}</option>
+                            {% endfor %}  
+                            </select>
+                            </div>
+                            <input type="hidden" id="idservice" name="idservice">
+                    </div>
+                        <center>
+                            <button type="submit" class="btn btn-success">Changer&nbsp;&nbsp;&nbsp;<i class="nav-icon fa fa-plus"></i></button>
+                        </center>
+            </form>
+        </div>
+     </div>
+    </div>
+</div>
+    
+  <script>
+       
+       $('#example2').on('click','.Editer',function(){
+           var table = $('#example2').DataTable();
+           var iddir= $(this).val();
+           var data = table.row($(this).closest('tr')).data();
+           var colCodeser = data[Object.keys(data)[1]];
+           var colNomser = data[Object.keys(data)[2]];
+           var idservice = $(this).attr('id');
+           $('#idservice').val(idservice);
+           $('#codeservice_mod').val(colCodeser);
+           $('#nomservice_mod').val(colNomser);
+           $('#iddir_mod').val(iddir);
+       });
+ 
+  </script>
+{% endblock %}

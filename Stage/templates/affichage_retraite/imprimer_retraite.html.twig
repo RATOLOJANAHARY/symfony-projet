@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste</title>
+    <link rel="stylesheet" type="text/css" href="{{asset('/plugins/bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('/plugins/bootstrap/css/bootstrap.css')}}">
+</head>
+<style>
+table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    h2 {
+        font-family: "Times New Roman", Times, serif;
+    }
+    p {
+        padding-top: 10px;
+    }
+</style>
+<header>
+    <p style="text-align: center;">
+        <h2 style="text-align: center;">REPOBLIKAN'I MADAGASIKARA</h2>
+            <center>Fitiavana - Tanindrazana - Fandrosoana<br>
+                    ********************************
+            </center>
+    </p>
+</header><br><br>
+<body>         
+    <table>
+      <tr>
+        <th>N°</th>
+        <th>CIN</th>
+        <th>Nom</th>
+        <th>Prenom</th>
+        <th>Sexe</th>
+        <th>Service</th>
+        <th>Grade</th>
+        <th>Ans de service</th>
+        <th>Age</th>
+      </tr>
+    {% set i = 0 %}
+    {% for personnel in personnels %}   
+    {% if personnel.anneservice >=2 %}
+      <tr>
+        {% set i = i+1 %}
+        <td>{{ i }}</td>
+        <td>{{ personnel.CIN }}</td>
+        <td>{{ personnel.Nom }}</td>
+        <td>{{ personnel.Prenom }}</td>
+        <td>{{ personnel.Sexe }}</td>
+        <td>{{ personnel.codeservice }}</td>
+        <td>{{ personnel.code_grade }}</td>
+        <td>{{ personnel.anneservice }}</td>
+        <td>{{ personnel.age }}</td>
+      </tr>
+    {% endif %}
+    {% endfor %}
+    </table>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
